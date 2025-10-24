@@ -8,11 +8,11 @@ import lombok.*;
 public class Accounts extends  BaseEntity {
 
     @Column(name="customer_id")
-    private Long customerId;
+    private Integer customerId;
 
     @Column(name="account_number")
     @Id
-    private Long accountNumber;
+    private Integer accountNumber;
 
     @Column(name="account_type")
     private String accountType;

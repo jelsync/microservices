@@ -15,7 +15,6 @@ import com.eazybytes.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -50,7 +49,7 @@ public class AccountsServiceImpl  implements IAccountsService {
         newAccount.setCustomerId(customer.getCustomerId());
         long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
 
-        newAccount.setAccountNumber(randomAccNumber);
+        newAccount.setAccountNumber((int) randomAccNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
         return newAccount;
@@ -65,7 +64,7 @@ public class AccountsServiceImpl  implements IAccountsService {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+        Accounts accounts = accountsRepository.findByCustomerId(Long.valueOf(customer.getCustomerId())).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
         );
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
@@ -88,7 +87,7 @@ public class AccountsServiceImpl  implements IAccountsService {
             AccountsMapper.mapToAccounts(accountsDto, accounts);
             accounts = accountsRepository.save(accounts);
 
-            Long customerId = accounts.getCustomerId();
+            Long customerId = Long.valueOf(accounts.getCustomerId());
             Customer customer = customerRepository.findById(customerId).orElseThrow(
                     () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
             );
@@ -108,8 +107,8 @@ public class AccountsServiceImpl  implements IAccountsService {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        accountsRepository.deleteByCustomerId(customer.getCustomerId());
-        customerRepository.deleteById(customer.getCustomerId());
+        accountsRepository.deleteByCustomerId(Long.valueOf(customer.getCustomerId()));
+        customerRepository.deleteById(Long.valueOf(customer.getCustomerId()));
         return true;
     }
 
