@@ -63,6 +63,9 @@ POST   /api/create                        - Crear nueva cuenta
 PUT    /api/update                        - Actualizar cuenta
 DELETE /api/delete?mobileNumber={id}      - Eliminar cuenta
 ```
+Swagger
+
+DireccionIP/swagger-ui/index.html
 
 ## 📝 Buenas Prácticas de Seguridad
 
